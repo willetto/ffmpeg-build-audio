@@ -71,12 +71,14 @@ tar --strip-components=1 -xf $BASE_DIR/$LAME_TARBALL -C $LAME_BUILD_DIR
 pushd $LAME_BUILD_DIR
 # Use explicit arch and macOS deployment target so we build LAME for the correct target
 # even when running on an Apple Silicon (arm64) runner cross-compiling x86_64.
-export CFLAGS="-arch $ARCH $MACOSX_MIN_FLAG"
-export LDFLAGS="-arch $ARCH $MACOSX_MIN_FLAG"
+# We use local vars (not export) to avoid leaking CFLAGS/LDFLAGS into the FFmpeg configure env.
+ARCH_FLAGS="-arch $ARCH $MACOSX_MIN_FLAG"
 ./configure \
     --prefix="$LAME_PREFIX" \
     --host="$ARCH-apple-darwin" \
-    CC="/usr/bin/clang" \
+    CC="/usr/bin/clang -target $ARCH-apple-macos$MACOSX_VER" \
+    CFLAGS="$ARCH_FLAGS" \
+    LDFLAGS="$ARCH_FLAGS" \
     --disable-shared \
     --enable-static \
     --disable-frontend
@@ -91,8 +93,8 @@ FFMPEG_CONFIGURE_FLAGS+=(
     --enable-cross-compile
     --target-os=darwin
     --arch=$ARCH
-    --extra-ldflags="$LDFLAGS -L$LAME_PREFIX/lib"
-    --extra-cflags="$CFLAGS -I$LAME_PREFIX/include"
+    --extra-ldflags="-arch $ARCH $MACOSX_MIN_FLAG -L$LAME_PREFIX/lib"
+    --extra-cflags="-arch $ARCH $MACOSX_MIN_FLAG -I$LAME_PREFIX/include"
     --enable-runtime-cpudetect
 )
 
