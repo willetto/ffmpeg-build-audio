@@ -75,6 +75,8 @@ jobs:
         run: brew install nasm lame
       - name: Build
         run: ./build-macos.sh
+      - name: Test libmp3lame
+        run: ./tests/test-libmp3lame.sh
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:

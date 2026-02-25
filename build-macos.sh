@@ -35,14 +35,16 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
+LAME_PREFIX=$(brew --prefix lame)
+
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
     --prefix=$BASE_DIR/$OUTPUT_DIR
     --enable-cross-compile
     --target-os=darwin
     --arch=$ARCH
-    --extra-ldflags="-target $TARGET"
-    --extra-cflags="-target $TARGET"
+    --extra-ldflags="-target $TARGET -L$LAME_PREFIX/lib"
+    --extra-cflags="-target $TARGET -I$LAME_PREFIX/include"
     --enable-runtime-cpudetect
 )
 
