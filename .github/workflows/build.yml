@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y && \
-          sudo apt-get install -y nasm
+          sudo apt-get install -y nasm libmp3lame-dev
       - name: Install ARM64 compiler
         if: env.ARCH == 'arm64'
         run: |
@@ -72,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
-        run: brew install nasm
+        run: brew install nasm lame
       - name: Build
         run: ./build-macos.sh
       - name: Archive artifacts
