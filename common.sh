@@ -36,6 +36,13 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-videotoolbox
     --disable-audiotoolbox
 
+    # Enable only required audio encoders and muxers for podcast trimming
+    --enable-encoder=pcm_s16le
+    --enable-encoder=libmp3lame
+
+    --enable-muxer=wav
+    --enable-muxer=mp3
+
     --disable-filters
     --enable-filter=aformat
     --enable-filter=anull
