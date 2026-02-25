@@ -53,10 +53,8 @@ trap 'rm -rf $BUILD_DIR' EXIT
 # Prepare FFmpeg source: either clone from upstream git (recommended for CI/git-source
 # workflows) or extract the release tarball shipped with the repo.
 if [ "$USE_GIT" = "1" ]; then
-    git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git $BUILD_DIR/ffmpeg-src || git clone --depth 1 https://git.ffmpeg.org/ffmpeg.git $BUILD_DIR/ffmpeg-src
+    git clone --depth 1 --branch "n$FFMPEG_VERSION" https://git.ffmpeg.org/ffmpeg.git $BUILD_DIR/ffmpeg-src || git clone --depth 1 --branch "n$FFMPEG_VERSION" https://git.ffmpeg.org/ffmpeg.git $BUILD_DIR/ffmpeg-src
     cd $BUILD_DIR/ffmpeg-src
-    # Try to check out the matching release tag (n8.0) if available; otherwise stay on HEAD.
-    git checkout "n$FFMPEG_VERSION" || true
 else
     cd $BUILD_DIR
     tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
@@ -69,6 +67,9 @@ mkdir -p $LAME_BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$LAME_TARBALL -C $LAME_BUILD_DIR
 
 pushd $LAME_BUILD_DIR
+# LAME 3.100's config.sub/config.guess don't recognize arm64-apple-darwin
+curl -fsSL -o config.sub "https://git.savannah.gnu.org/cgit/config.git/plain/config.sub"
+curl -fsSL -o config.guess "https://git.savannah.gnu.org/cgit/config.git/plain/config.guess"
 # Use explicit arch and macOS deployment target so we build LAME for the correct target
 # even when running on an Apple Silicon (arm64) runner cross-compiling x86_64.
 # We use local vars (not export) to avoid leaking CFLAGS/LDFLAGS into the FFmpeg configure env.

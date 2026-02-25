@@ -72,7 +72,7 @@ jobs:
       # Use upstream git source for FFmpeg (and build LAME from source) instead of relying on
       # any local Homebrew-installed LAME. The build script will fetch FFmpeg from
       # https://git.ffmpeg.org/ffmpeg.git when USE_GIT=1.
-      USE_GIT: '1'
+      USE_GIT: "1"
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
