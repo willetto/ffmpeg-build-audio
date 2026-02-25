@@ -1,13 +1,13 @@
-Static audio-only FFmpeg builds (podcast-focused)
+Static audio-only FFmpeg builds
 ===============================================
 
-This repository is a **fork of** [acoustid/ffmpeg-build](https://github.com/acoustid/ffmpeg-build). It keeps the same lightweight, audio‑only FFmpeg configuration but **adds the encoders/muxers needed for podcast trimming/export**.
+This repository is a **fork of** [acoustid/ffmpeg-build](https://github.com/acoustid/ffmpeg-build). It keeps the same lightweight, audio‑only FFmpeg configuration but **adds the encoders/muxers needed for audio trimming/export**.
 
 ## What’s different vs upstream
 
 - **Encoders enabled:** `pcm_s16le`, `libmp3lame`
 - **Muxers enabled:** `wav`, `mp3`
-- Purpose: enable waveform generation and MP3 export for apps like podcast editors.
+- Purpose: enable waveform generation and MP3 export for audio editor apps.
 
 Upstream is decode‑only; this fork supports **encode + mux** for audio workflows.
 
