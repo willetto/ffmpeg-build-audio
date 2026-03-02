@@ -1,0 +1,14 @@
+prefix=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11
+exec_prefix=${prefix}
+libdir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/lib
+includedir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/include
+
+Name: libavfilter
+Description: FFmpeg audio/video filtering library
+Version: 11.4.100
+Requires: libavutil >= 60.8.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavfilter -pthread -lm
+Libs.private: 
+Cflags: -I${includedir}

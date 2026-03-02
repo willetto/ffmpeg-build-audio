@@ -1,0 +1,14 @@
+prefix=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11
+exec_prefix=${prefix}
+libdir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/lib
+includedir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/include
+
+Name: libswresample
+Description: FFmpeg audio resampling library
+Version: 6.1.100
+Requires: libavutil >= 60.8.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lswresample -lm
+Libs.private: 
+Cflags: -I${includedir}

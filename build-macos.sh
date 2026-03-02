@@ -7,6 +7,20 @@ BASE_DIR=$(pwd)
 
 source common.sh
 
+# Harden build env to prevent linking to Homebrew libs (libX11 etc.) that are not
+# present on end-user Macs. See README "Build notes (macOS distribution)".
+export PKG_CONFIG_PATH=""
+export PKG_CONFIG_LIBDIR="/var/empty"
+export CPPFLAGS="" LDFLAGS="" CFLAGS=""
+export LIBRARY_PATH="" C_INCLUDE_PATH="" CPATH=""
+# Restrict PATH to exclude /opt/homebrew/bin (sdl2-config, pkg-config) but keep nasm
+NASM_PATH=$(command -v nasm 2>/dev/null || true)
+if [ -n "$NASM_PATH" ]; then
+  export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$(dirname "$NASM_PATH")"
+else
+  export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+fi
+
 # If you want to use the upstream git repository instead of the release tarball,
 # set USE_GIT=1 in the environment. This ensures we pull source directly from
 # https://git.ffmpeg.org/ffmpeg.git instead of relying on a local tarball.

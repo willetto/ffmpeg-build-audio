@@ -1,0 +1,14 @@
+prefix=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11
+exec_prefix=${prefix}
+libdir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/lib
+includedir=/Users/treywilletto/Documents/Coding/prosody/audio-trimmer/ffmpeg-build-audio/artifacts/ffmpeg-8.0-audio-arm64-apple-macos11/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 60.8.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil -lm -framework CoreFoundation -framework CoreVideo -framework CoreMedia -pthread
+Libs.private: 
+Cflags: -I${includedir}
