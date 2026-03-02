@@ -24,6 +24,7 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-bzlib
     --disable-iconv
     --disable-libxcb
+    --disable-sdl2
     --disable-bsfs
     --disable-filters
     --disable-parsers
