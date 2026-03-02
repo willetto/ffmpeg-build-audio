@@ -22,7 +22,24 @@ jobs:
       - name: Install dependencies
         run: brew install nasm
       - name: Build
-        run: ./build-macos.sh
+        env:
+          # Prevent FFmpeg configure from finding Homebrew libs (e.g. libX11 via SDL2, libxcb).
+          # PKG_CONFIG_LIBDIR overrides defaults; /var/empty has no .pc files.
+          # LIBRARY_PATH prevents linker from searching Homebrew.
+          PKG_CONFIG_PATH: ""
+          PKG_CONFIG_LIBDIR: /var/empty
+          CPPFLAGS: ""
+          LDFLAGS: ""
+          CFLAGS: ""
+          LIBRARY_PATH: ""
+          C_INCLUDE_PATH: ""
+          CPATH: ""
+        run: |
+          # Restrict PATH to exclude Homebrew bin (sdl2-config, pkg-config) but keep nasm
+          export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$(dirname "$(which nasm)")"
+          ./build-macos.sh
+      - name: Verify no external dylibs
+        run: ./scripts/verify-no-external-dylibs.sh
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:

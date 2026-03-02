@@ -42,6 +42,20 @@ curl -L -o ffmpeg.tar.gz \
   - `x86_64-apple-macos10.9` (Intel, macOS 10.9+)
   - `arm64-apple-macos11` (Apple Silicon, macOS 11+)
 
+## Build notes (macOS distribution)
+
+The macOS FFmpeg binary must **not** link to `/opt/homebrew` or `/usr/local`. Those paths exist on build machines but not on end-user Macs; linking to them causes "The application can't be opened" / Error 163 when the binary is bundled (e.g. in a Tauri app).
+
+**What we do:** In CI we (1) unset `PKG_CONFIG_PATH`, `CPPFLAGS`, `LDFLAGS`, `LIBRARY_PATH`; (2) set `PKG_CONFIG_LIBDIR=/var/empty` so pkg-config finds no Homebrew packages; (3) restrict `PATH` to exclude `/opt/homebrew/bin` (so `sdl2-config` and `pkg-config` are not used) while keeping `nasm`; (4) use `--disable-sdl2` and `--disable-libxcb` in `FFMPEG_CONFIGURE_FLAGS`.
+
+**How to verify:** Run `./scripts/verify-no-external-dylibs.sh` after building, or inspect manually:
+
+```bash
+otool -L artifacts/ffmpeg-*/bin/ffmpeg
+```
+
+Ensure no paths contain `/opt/homebrew` or `/usr/local`. Allowed paths include `/usr/lib/*` and `/System/Library/*`.
+
 ## Credits
 
 - Upstream build scripts: [acoustid/ffmpeg-build](https://github.com/acoustid/ffmpeg-build)
